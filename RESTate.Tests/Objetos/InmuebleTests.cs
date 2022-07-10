@@ -90,16 +90,28 @@ namespace RESTate.Tests.Objetos
             var inmueble = _InmueblePorDefecto();
 
             const string motivoLiberacion = "fue reservado por error";
-            DateTime fechaLiberacion = DateTime.Now;
 
             inmueble.Reservar(contacto, DateTime.Now);
             Reserva copiaReserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
+
+            DateTime fechaLiberacion = DateTime.Now;
 
             inmueble.LiberarReserva(fechaLiberacion, motivoLiberacion);
 
             Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
             Assert.Equal(motivoLiberacion, copiaReserva.MotivoLiberacion);
             Assert.Equal(fechaLiberacion, copiaReserva.FechaLiberacion);
+        }
+
+        [Fact]
+        public void Inmueble_ReservaNoEntraEnEfecto_AntesDeInicio()
+        {
+            var contacto = new Contacto("Juan", "123");
+            var inmueble = _InmueblePorDefecto();
+
+            inmueble.Reservar(contacto, DateTime.Now.AddDays(1));
+
+            Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
         }
 
         [Fact]

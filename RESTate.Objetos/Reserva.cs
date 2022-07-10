@@ -15,7 +15,7 @@ namespace RESTate.Objetos
 
         public bool VigenteALaFecha(DateTime fecha)
         {
-            return FechaLiberacion == null && fecha < FechaVencimiento;
+            return FechaLiberacion == null && fecha <= FechaVencimiento && fecha >= FechaInicio;
         }
 
         public Reserva(Contacto interesado, DateTime fechaInicio, TimeSpan? duracion = null)

@@ -28,7 +28,7 @@ namespace RESTate.Objetos
 
         public bool EsVigenteALaFecha(DateTime fecha)
         {
-            return !(FechaFirma is null) && FechaRescision is null && fecha <= FechaFinalizacionPlazo;
+            return !(FechaFirma is null) && FechaRescision is null && fecha <= FechaFinalizacionPlazo && fecha >= FechaInicioPlazo;
         }
 
         public void Firmar(DateTime fechaFirma)
@@ -57,7 +57,7 @@ namespace RESTate.Objetos
 
         public void EstablecerMontoPactado(double montoPactado, DateTime fechaEstablecimiento)
         {
-            if (EsVigenteALaFecha(fechaEstablecimiento))
+            if (!(FechaFirma is null))
                 throw new DominioException("No se puede modificar el monto pactado inicial una vez firmado el contrato");
 
             MontoPactadoInicial = montoPactado;

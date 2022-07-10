@@ -176,6 +176,26 @@ namespace RESTate.Tests.Objetos
             Assert.False(contrato.EsVigenteALaFecha(contrato.FechaFinalizacionPlazo.Value.AddMilliseconds(1)));
         }
 
+        [Fact]
+        public void ContratoAlquiler_NoEsVigenteEnFechaAnteriorAPlazo()
+        {
+            var inquilino = new Contacto("Juan", "123");
+            var propietario = new Contacto("Matias", "456");
+            var inmueble = _InmueblePorDefecto();
+
+            var contrato = new ContratoAlquiler(inmueble, inquilino);
+
+            contrato.EstablecerPlazo(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(2 + 12 * 3));
+            contrato.EstablecerMontoPactado(50000, DateTime.Now);
+            contrato.UbicacionDocumento = "contrato.pdf";
+
+            var fechaFirma = DateTime.Now;
+
+            contrato.Firmar(fechaFirma);
+            Assert.False(contrato.EsVigenteALaFecha(contrato.FechaInicioPlazo.Value.AddMilliseconds(-1)));
+            Assert.True(contrato.EsVigenteALaFecha(contrato.FechaInicioPlazo.Value.AddMilliseconds(1)));
+        }
+
         private Inmueble _InmueblePorDefecto()
         {
             var propietario = new Contacto("Matias", "456");
