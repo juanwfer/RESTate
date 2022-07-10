@@ -72,5 +72,11 @@ namespace RESTate.Tests.Objetos
         {
             Assert.Throws<ArgumentNullException>(() => new Contacto("Juan", null));
         }
+
+        [Fact]
+        public void Contacto_DeberiaTenerAlMenosUnTelefono()
+        {
+            Assert.Throws<ArgumentException>(() => new Contacto("Juan"));
+        }
     }
 }
