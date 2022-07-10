@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using RESTate.Servicios;
 using Serilog;
 
 namespace RESTate.Api
@@ -24,7 +25,9 @@ namespace RESTate.Api
 
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+            builder.Services.AddCapaServicios(builder.Configuration);
+
+            builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(Extensiones).Assembly);
 
             builder.Logging.AddSerilog(logger);
 
