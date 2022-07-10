@@ -11,7 +11,7 @@ namespace RESTate.Tests.Objetos
         [Fact]
         public void Contacto_DeberiaCrearse_ConNombreCompletoYContacto()
         {
-            var contacto = new Contacto(nombreCompleto:"Juan", telefonoPrincipal:"(123) 456-789");
+            var contacto = new Contacto(nombreCompleto:"Juan", telefonos:"(123) 456-789");
 
             Assert.Equal("Juan", contacto.NombreCompleto);
             Assert.Equal("(123) 456-789", contacto.Telefonos.First());
@@ -21,7 +21,7 @@ namespace RESTate.Tests.Objetos
         [Fact]
         public void Contacto_DeberiaCrearse_ConVariosTelefonos()
         {
-            var contacto = new Contacto(nombreCompleto: "Juan", telefonos: new List<string> { "123", "456" });
+            var contacto = new Contacto(nombreCompleto: "Juan", "123", "456");
 
             Assert.Equal("Juan", contacto.NombreCompleto);
             Assert.Equal("123", contacto.TelefonoPrincipal);
@@ -41,6 +41,36 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto(nombreCompleto, "123");
             Assert.Equal("Juan", contacto.NombreCompleto);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        public void Contacto_NombreNoDeberiaSerEspacioOVacio(string nombreCompleto)
+        {
+            Assert.Throws<ArgumentException>(() => new Contacto(nombreCompleto, "123"));
+        }
+
+        [Fact]
+        public void Contacto_NombreNoDeberiaSerNulo()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Contacto(null, "123"));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        public void Contacto_TelefonoNoDeberiaSerEspacioOVacio(string telefono)
+        {
+            Assert.Throws<ArgumentException>(() => new Contacto("Juan", telefono));
+        }
+
+        [Fact]
+        public void Contacto_TelefonoNoDeberiaSerNulo()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Contacto("Juan", null));
         }
     }
 }

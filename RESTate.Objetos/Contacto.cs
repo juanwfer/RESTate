@@ -12,16 +12,24 @@ namespace RESTate.Objetos
         public string TelefonoPrincipal { get => Telefonos.First(); }
         public List<string> Telefonos { get; set; }
 
-        public Contacto(string nombreCompleto, string telefonoPrincipal)
+        public Contacto(string nombreCompleto, params string[] telefonos)
         {
-            NombreCompleto = nombreCompleto.Trim();
-            Telefonos = new List<string> { telefonoPrincipal };
-        }
+            if (nombreCompleto is null)
+                throw new ArgumentNullException(nameof(nombreCompleto));
 
-        public Contacto(string nombreCompleto, List<string> telefonos)
-        {
+            if(telefonos.Any(t => t is null))
+                throw new ArgumentNullException(nameof(telefonos));
+
             NombreCompleto = nombreCompleto.Trim();
-            Telefonos = telefonos;
+
+            if (string.IsNullOrWhiteSpace(NombreCompleto))
+                throw new ArgumentException("Nombre inválido", nameof(nombreCompleto));
+
+            Telefonos = telefonos.Select(t => t.Trim()).ToList();
+
+
+            if (Telefonos.Any(t => string.IsNullOrEmpty(t)))
+                throw new ArgumentException("Teléfono inválido", nameof(telefonos));
         }
     }
 }
