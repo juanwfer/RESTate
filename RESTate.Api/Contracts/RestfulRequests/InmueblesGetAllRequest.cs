@@ -4,6 +4,8 @@
     {
         public int? CantidadDeAmbientesMinimo { get; set; }
         public int? CantidadDeAmbientesMaximo { get; set; }
+        public int? CantidadDeBañosMinimo { get; set; }
+        public int? CantidadDeBañosMaximo { get; set; }
         public int? MetrosCuadradosMinimo { get; set; }
         public int? MetrosCuadradosMaximo { get; set; }
         public int? MetrosCuadradosCubiertosMinimo { get; set; }

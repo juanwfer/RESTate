@@ -29,6 +29,7 @@ namespace RESTate.Objetos
         }
 
         public List<ContratoAlquiler> HistorialContratos { get; set; } = new List<ContratoAlquiler>();
+        public string? Descripcion { get; set; }
 
         public Inmueble(string resumen, int cantidadDeAmbientes, int cantidadDeDormitorios, int cantidadDeBaños, int metrosCuadrados, int metrosCuadradosCubiertos, DateTime fechaCreacion, Contacto? propietario = null, Contacto? inquilino = null)
         {
