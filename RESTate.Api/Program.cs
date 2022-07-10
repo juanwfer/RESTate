@@ -22,6 +22,8 @@ namespace RESTate.Api
 
             builder.Services.AddSingleton(logger);
 
+            builder.Services.AddSwaggerGen();
+
             builder.Logging.AddSerilog(logger);
 
             var app = builder.Build();
@@ -30,7 +32,11 @@ namespace RESTate.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseSwagger();
+
+            app.UseSwaggerUI();
+
+            //app.UseAuthorization();
 
 
             app.MapControllers();
