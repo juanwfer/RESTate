@@ -171,5 +171,99 @@ namespace RESTate.Tests.Objetos
 
             Assert.Null(inmueble.ReservaActiva);
         }
+
+        [Fact]
+        public void Inmueble_PuedeAgregarsePropietarioDespuesDeCreacion()
+        {
+            var nuevoPropietario = new Contacto("Matias", "456");
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60);
+
+            inmueble.CambiarPropietario(nuevoPropietario, "motivoDeCambio");
+
+            Assert.Equal(nuevoPropietario, inmueble.Propietario);
+        }
+
+        [Fact]
+        public void Inmueble_RegistraHistorialPropietarios()
+        {
+            var p1 = new Contacto("Jorge", "123");
+
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+
+            Assert.Equal(p1, inmueble.HistorialPropietarios.First().Propietario);
+        }
+
+        [Fact]
+        public void Inmueble_PropietarioActual_EsUltimoPropietario()
+        {
+            var p1 = new Contacto("Jorge", "123");
+            var p2 = new Contacto("Martín", "987");
+
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+
+            inmueble.CambiarPropietario(p2, "segundo propietario");
+
+            Assert.Equal(p2, inmueble.Propietario);
+        }
+
+        [Fact]
+        public void Inmueble_HistorialPropietarios_GuardaMotivoSalida()
+        {
+            var p1 = new Contacto("Jorge", "123");
+            var p2 = new Contacto("Martín", "3243234");
+
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+            const string motivoCambio = "SegundoPropietario";
+
+            inmueble.CambiarPropietario(p2, motivoCambio);
+
+            Assert.Equal(p2, inmueble.HistorialPropietarios.Last().Propietario);
+            Assert.Equal(motivoCambio, inmueble.HistorialPropietarios.Last().MotivoEntrada);
+            Assert.Equal(motivoCambio, inmueble.HistorialPropietarios.First().MotivoSalida);
+        }
+
+        [Fact]
+        public void Inmueble_ConContratoDeAlquiler_NoPuedeCambiarPropietario()
+        {
+            var propietario = new Contacto("Jorge", "123");
+            var inquilino = new Contacto("Martín", "3243234");
+            var propietario2 = new Contacto("Pedro", "225265");
+
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+
+            var contratoAlquiler = new ContratoAlquiler(inmueble, inquilino);
+
+            contratoAlquiler.EstablecerPlazo(DateTime.Now, DateTime.Now.AddMonths(12));
+            contratoAlquiler.EstablecerMontoPactado(50000);
+
+            contratoAlquiler.Firmar(DateTime.Now);
+
+            const string motivoCambio = "SegundoPropietario";
+
+            Assert.Throws<DominioException>(() => inmueble.CambiarPropietario(propietario2, motivoCambio));
+        }
+
+        [Fact]
+        public void Inmueble_ConContratoDeAlquilerRescindido_PuedeCambiarPropietario()
+        {
+            var propietario = new Contacto("Jorge", "123");
+            var inquilino = new Contacto("Martín", "3243234");
+            var propietario2 = new Contacto("Pedro", "225265");
+
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+
+            var contratoAlquiler = new ContratoAlquiler(inmueble, inquilino);
+
+            contratoAlquiler.EstablecerPlazo(DateTime.Now, DateTime.Now.AddMonths(12));
+            contratoAlquiler.EstablecerMontoPactado(50000);
+
+            contratoAlquiler.Firmar(DateTime.Now);
+
+            contratoAlquiler.Rescindir(DateTime.Now, "por cambio de propietario");
+
+            const string motivoCambio = "SegundoPropietario";
+
+            inmueble.CambiarPropietario(propietario2, motivoCambio);
+        }
     }
 }

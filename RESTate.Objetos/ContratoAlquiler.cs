@@ -38,6 +38,8 @@ namespace RESTate.Objetos
             if (FechaInicioPlazo is null || FechaFinalizacionPlazo is null)
                 throw new DominioException("No se puede firmar el contrato de locación sin establecer el plazo completo");
 
+            Inmueble.HistorialContratos.Add(this);
+
             FechaFirma = fechaFirma;
         }
 
