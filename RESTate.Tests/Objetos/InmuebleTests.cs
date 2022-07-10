@@ -118,12 +118,13 @@ namespace RESTate.Tests.Objetos
         public void Inmueble_AlReservarse_DuracionPorDefectoEsDeSieteDias()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
             var inmueble = _InmueblePorDefecto();
 
-            inmueble.Reservar(contacto, DateTime.Now);
+            var fechaInicio = DateTime.Now;
 
-            Assert.Equal(TimeSpan.FromDays(7), inmueble.ReservaActivaALaFecha(DateTime.Now).Duracion);
+            inmueble.Reservar(contacto, fechaInicio);
+
+            Assert.Equal(fechaInicio.AddDays(7), inmueble.ReservaActivaALaFecha(DateTime.Now).FechaVencimiento);
         }
 
         [Fact]
@@ -133,9 +134,13 @@ namespace RESTate.Tests.Objetos
             var propietario = new Contacto("Matias", "456");
             var inmueble = _InmueblePorDefecto();
 
-            inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
+            var fechaInicio = DateTime.Now;
 
-            Assert.Equal(TimeSpan.FromDays(5), inmueble.ReservaActivaALaFecha(DateTime.Now).Duracion);
+            inmueble.Reservar(contacto, fechaInicio, fechaInicio.AddDays(5));
+
+            var reserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
+
+            Assert.Equal(TimeSpan.FromDays(5), reserva.FechaVencimiento - reserva.FechaInicio);
         }
 
         [Fact]
@@ -148,7 +153,7 @@ namespace RESTate.Tests.Objetos
             var fechaInicio = DateTime.Now;
             var duracion = TimeSpan.FromDays(15);
 
-            inmueble.Reservar(contacto, fechaInicio, duracion);
+            inmueble.Reservar(contacto, fechaInicio, fechaInicio+duracion);
 
             Assert.Equal(fechaInicio+duracion, inmueble.ReservaActivaALaFecha(DateTime.Now).FechaVencimiento);
         }
@@ -160,7 +165,7 @@ namespace RESTate.Tests.Objetos
             var propietario = new Contacto("Matias", "456");
             var inmueble = _InmueblePorDefecto();
 
-            inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
+            inmueble.Reservar(contacto, DateTime.Now, DateTime.Now.AddDays(5));
             var copiaReserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
 
             inmueble.LiberarReserva(DateTime.Now, "porque sí");
@@ -176,7 +181,7 @@ namespace RESTate.Tests.Objetos
             var propietario = new Contacto("Matias", "456");
             var inmueble = _InmueblePorDefecto();
 
-            inmueble.Reservar(contacto, DateTime.Now.AddDays(-6), TimeSpan.FromDays(5));
+            inmueble.Reservar(contacto, DateTime.Now.AddDays(-6), DateTime.Now.AddDays(-1));
 
             Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
         }

@@ -44,12 +44,12 @@ namespace RESTate.Objetos
                 CambiarPropietario(propietario, "Propietario al momento de creación", fechaCreacion);
         }
 
-        public void Reservar(Contacto contacto, DateTime fechaInicio, TimeSpan? duracion = null)
+        public void Reservar(Contacto contacto, DateTime fechaInicio, DateTime? fechaVencimiento = null)
         {
             if (!(ReservaActivaALaFecha(fechaInicio) is null))
                 throw new DominioException("No se puede reservar el inmueble previamente reservado");
 
-            HistorialReservas.Add(new Reserva(contacto, fechaInicio, duracion));
+            HistorialReservas.Add(new Reserva(contacto, fechaInicio, fechaVencimiento));
         }
 
         public void LiberarReserva(DateTime fechaLiberacion, string motivoLiberacion)
