@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RESTate.Objetos.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,17 @@ namespace RESTate.Objetos
         public string NombreCompleto { get; set; }
         public string TelefonoPrincipal { get => Telefonos.First(); }
         public List<string> Telefonos { get; set; }
+        public TipoDocumento? TipoDocumento { get; set; }
+        public int? NumeroDocumento { get; set; }
+        public string? Observaciones { get; set; }
+        public string? Email { get; set; }
 
         public Contacto(string nombreCompleto, params string[] telefonos)
         {
             if (nombreCompleto is null)
                 throw new ArgumentNullException(nameof(nombreCompleto));
 
-            if(telefonos.Any(t => t is null))
+            if (telefonos.Any(t => t is null))
                 throw new ArgumentNullException(nameof(telefonos));
 
             if (telefonos.Length == 0)

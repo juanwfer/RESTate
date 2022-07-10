@@ -9,4 +9,14 @@ namespace RESTate.Objetos.Enums
         Propietaria,
         Garante,
     }
+
+    public enum TipoDocumento
+    {
+        Dni,
+        Cuil,
+        Cuit,
+        Le,
+        Lc,
+        Ci
+    }
 }
