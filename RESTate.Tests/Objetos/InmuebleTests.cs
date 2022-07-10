@@ -27,6 +27,7 @@ namespace RESTate.Tests.Objetos
             var inmueble = new Inmueble("Depto", 3, 1, 2, 2, 1, contacto);
         }
 
+        [Fact]
         public void Inmueble_DeberiaPoderCrearse_ConInquilino()
         {
             var contacto = new Contacto("Juan", "123");
