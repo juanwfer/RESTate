@@ -2,7 +2,8 @@
 {
     public class InmueblesGetAllResponse
     {
-        public string Link { get => ""; }
+        public string Link { get; set; } = "";
+        public int IdInmueble { get; set; }
         public string Resumen { get; set; } = "";
         public int MetrosCuadrados { get; set; }
         public int MetrosCuadradosCubiertos { get; set; }

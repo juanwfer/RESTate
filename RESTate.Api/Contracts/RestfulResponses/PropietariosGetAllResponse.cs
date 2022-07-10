@@ -1,6 +1,6 @@
 ﻿namespace RESTate.Api.Contracts.RestfulResponses
 {
-    public class PropietariosGetAllResponse
+    public class PropietariosGetAllResponse : ContactosGetAllResponse
     {
     }
 }
