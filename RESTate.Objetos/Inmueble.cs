@@ -22,10 +22,15 @@ namespace RESTate.Objetos
 
         public List<Reserva> HistorialReservas { get; private set; } = new List<Reserva>();
         public List<PropietarioHistorico> HistorialPropietarios { get; set; } = new List<PropietarioHistorico>();
-        public ContratoAlquiler? ContratoActivo { get => HistorialContratos.FirstOrDefault(contrato => contrato.Vigente); }
+
+        public ContratoAlquiler? ContratoActivoALaFecha(DateTime fecha)
+        {
+            return HistorialContratos.FirstOrDefault(contrato => contrato.EsVigenteALaFecha(fecha));
+        }
+
         public List<ContratoAlquiler> HistorialContratos { get; set; } = new List<ContratoAlquiler>();
 
-        public Inmueble(string resumen, int cantidadDeAmbientes, int cantidadDeDormitorios, int cantidadDeBaños, int metrosCuadrados, int metrosCuadradosCubiertos, Contacto? propietario = null, Contacto? inquilino = null)
+        public Inmueble(string resumen, int cantidadDeAmbientes, int cantidadDeDormitorios, int cantidadDeBaños, int metrosCuadrados, int metrosCuadradosCubiertos, DateTime fechaCreacion, Contacto? propietario = null, Contacto? inquilino = null)
         {
             Resumen = resumen;
             CantidadDeAmbientes = cantidadDeAmbientes;
@@ -35,7 +40,7 @@ namespace RESTate.Objetos
             MetrosCuadradosCubiertos = metrosCuadradosCubiertos;
             Inquilino = inquilino;
             if(!(propietario is null))
-                CambiarPropietario(propietario, "Propietario al momento de creación");
+                CambiarPropietario(propietario, "Propietario al momento de creación", fechaCreacion);
         }
 
         public void Reservar(Contacto contacto, DateTime fechaInicio, TimeSpan? duracion = null)
@@ -55,9 +60,9 @@ namespace RESTate.Objetos
             reserva.Liberar(fechaLiberacion, motivoLiberacion);
         }
 
-        public void CambiarPropietario(Contacto nuevoPropietario, string motivoCambio)
+        public void CambiarPropietario(Contacto nuevoPropietario, string motivoCambio, DateTime fechaCambio)
         {
-            if (!(ContratoActivo is null))
+            if (!(ContratoActivoALaFecha(fechaCambio) is null))
                 throw new DominioException("No se puede cambiar el propietario con un contrato en vigencia");
 
             if (!(Propietario is null))

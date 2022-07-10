@@ -10,7 +10,6 @@ namespace RESTate.Objetos
         public Contacto Propietario { get; }
         public Contacto Inquilino { get; }
         public DateTime? FechaFirma { get; private set; }
-        public bool Vigente { get => !(FechaFirma is null) && FechaRescision is null; }
         public DateTime? FechaInicioPlazo { get; private set; }
         public DateTime? FechaFinalizacionPlazo { get; private set; }
         public double MontoPactadoInicial { get; private set; }
@@ -25,6 +24,11 @@ namespace RESTate.Objetos
             Inmueble = inmueble;
             Propietario = inmueble.Propietario;
             Inquilino = inquilino;
+        }
+
+        public bool EsVigenteALaFecha(DateTime fecha)
+        {
+            return !(FechaFirma is null) && FechaRescision is null && fecha <= FechaFinalizacionPlazo;
         }
 
         public void Firmar(DateTime fechaFirma)
@@ -51,9 +55,9 @@ namespace RESTate.Objetos
             FechaFinalizacionPlazo = fechaFinalizacion;
         }
 
-        public void EstablecerMontoPactado(double montoPactado)
+        public void EstablecerMontoPactado(double montoPactado, DateTime fechaEstablecimiento)
         {
-            if (Vigente)
+            if (EsVigenteALaFecha(fechaEstablecimiento))
                 throw new DominioException("No se puede modificar el monto pactado inicial una vez firmado el contrato");
 
             MontoPactadoInicial = montoPactado;

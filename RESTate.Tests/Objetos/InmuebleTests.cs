@@ -17,29 +17,29 @@ namespace RESTate.Tests.Objetos
                 cantidadDeDormitorios: 1,
                 cantidadDeBaños: 2,
                 metrosCuadrados: 2,
-                metrosCuadradosCubiertos: 1);
+                metrosCuadradosCubiertos: 1,
+                DateTime.Now);
         }
 
         [Fact]
         public void Inmueble_DeberiaPoderCrearse_ConPropietario()
         {
             var contacto = new Contacto("Juan", "123");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 2, 1, contacto);
+            new Inmueble("Depto", 3, 1, 2, 2, 1,DateTime.Now, contacto);
         }
 
         [Fact]
         public void Inmueble_DeberiaPoderCrearse_ConInquilino()
         {
             var contacto = new Contacto("Juan", "123");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 2, 1, inquilino: contacto);
+            new Inmueble("Depto", 3, 1, 2, 2, 1,DateTime.Now, inquilino: contacto);
         }
 
         [Fact]
         public void Inmueble_DeberiaPoderReservarse_QuedaReservado()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now);
 
@@ -50,8 +50,7 @@ namespace RESTate.Tests.Objetos
         public void Inmueble_AlReservarse_ReservaEsDeContactoInteresado()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             DateTime fecha = DateTime.Now;
 
@@ -64,8 +63,7 @@ namespace RESTate.Tests.Objetos
         public void Inmueble_AlReservarse_QuedaFechaDeInicio()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             var fechaInicio = DateTime.Now;
 
@@ -78,8 +76,7 @@ namespace RESTate.Tests.Objetos
         public void Inmueble_Reservado_NoPuedeVolverAReservarse()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now);
 
@@ -90,8 +87,7 @@ namespace RESTate.Tests.Objetos
         public void InmuebleReservado_PuedeCancelarReserva_QuedaLiberado()
         {
             var contacto = new Contacto("Juan", "123");
-            var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             const string motivoLiberacion = "fue reservado por error";
             DateTime fechaLiberacion = DateTime.Now;
@@ -111,7 +107,7 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto("Juan", "123");
             var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now);
 
@@ -123,7 +119,7 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto("Juan", "123");
             var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
 
@@ -135,7 +131,7 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto("Juan", "123");
             var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             var fechaInicio = DateTime.Now;
             var duracion = TimeSpan.FromDays(15);
@@ -150,7 +146,7 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto("Juan", "123");
             var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
             var copiaReserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
@@ -166,7 +162,7 @@ namespace RESTate.Tests.Objetos
         {
             var contacto = new Contacto("Juan", "123");
             var propietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             inmueble.Reservar(contacto, DateTime.Now.AddDays(-6), TimeSpan.FromDays(5));
 
@@ -177,9 +173,9 @@ namespace RESTate.Tests.Objetos
         public void Inmueble_PuedeAgregarsePropietarioDespuesDeCreacion()
         {
             var nuevoPropietario = new Contacto("Matias", "456");
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60);
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, DateTime.Now);
 
-            inmueble.CambiarPropietario(nuevoPropietario, "motivoDeCambio");
+            inmueble.CambiarPropietario(nuevoPropietario, "motivoDeCambio", DateTime.Now);
 
             Assert.Equal(nuevoPropietario, inmueble.Propietario);
         }
@@ -189,7 +185,7 @@ namespace RESTate.Tests.Objetos
         {
             var p1 = new Contacto("Jorge", "123");
 
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, DateTime.Now, p1);
 
             Assert.Equal(p1, inmueble.HistorialPropietarios.First().Propietario);
         }
@@ -200,9 +196,9 @@ namespace RESTate.Tests.Objetos
             var p1 = new Contacto("Jorge", "123");
             var p2 = new Contacto("Martín", "987");
 
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60,DateTime.Now, p1);
 
-            inmueble.CambiarPropietario(p2, "segundo propietario");
+            inmueble.CambiarPropietario(p2, "segundo propietario", DateTime.Now);
 
             Assert.Equal(p2, inmueble.Propietario);
         }
@@ -213,10 +209,10 @@ namespace RESTate.Tests.Objetos
             var p1 = new Contacto("Jorge", "123");
             var p2 = new Contacto("Martín", "3243234");
 
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, p1);
+            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, DateTime.Now, p1);
             const string motivoCambio = "SegundoPropietario";
 
-            inmueble.CambiarPropietario(p2, motivoCambio);
+            inmueble.CambiarPropietario(p2, motivoCambio, DateTime.Now);
 
             Assert.Equal(p2, inmueble.HistorialPropietarios.Last().Propietario);
             Assert.Equal(motivoCambio, inmueble.HistorialPropietarios.Last().MotivoEntrada);
@@ -230,18 +226,18 @@ namespace RESTate.Tests.Objetos
             var inquilino = new Contacto("Martín", "3243234");
             var propietario2 = new Contacto("Pedro", "225265");
 
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             var contratoAlquiler = new ContratoAlquiler(inmueble, inquilino);
 
             contratoAlquiler.EstablecerPlazo(DateTime.Now, DateTime.Now.AddMonths(12));
-            contratoAlquiler.EstablecerMontoPactado(50000);
+            contratoAlquiler.EstablecerMontoPactado(50000, DateTime.Now);
 
             contratoAlquiler.Firmar(DateTime.Now);
 
             const string motivoCambio = "SegundoPropietario";
 
-            Assert.Throws<DominioException>(() => inmueble.CambiarPropietario(propietario2, motivoCambio));
+            Assert.Throws<DominioException>(() => inmueble.CambiarPropietario(propietario2, motivoCambio, DateTime.Now));
         }
 
         [Fact]
@@ -251,12 +247,12 @@ namespace RESTate.Tests.Objetos
             var inquilino = new Contacto("Martín", "3243234");
             var propietario2 = new Contacto("Pedro", "225265");
 
-            var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
+            var inmueble = _InmueblePorDefecto();
 
             var contratoAlquiler = new ContratoAlquiler(inmueble, inquilino);
 
             contratoAlquiler.EstablecerPlazo(DateTime.Now, DateTime.Now.AddMonths(12));
-            contratoAlquiler.EstablecerMontoPactado(50000);
+            contratoAlquiler.EstablecerMontoPactado(50000, DateTime.Now);
 
             contratoAlquiler.Firmar(DateTime.Now);
 
@@ -264,7 +260,13 @@ namespace RESTate.Tests.Objetos
 
             const string motivoCambio = "SegundoPropietario";
 
-            inmueble.CambiarPropietario(propietario2, motivoCambio);
+            inmueble.CambiarPropietario(propietario2, motivoCambio, DateTime.Now);
+        }
+
+        private Inmueble _InmueblePorDefecto()
+        {
+            var propietario = new Contacto("Matias", "456");
+            return new Inmueble("Depto", 3, 1, 2, 60, 60, DateTime.Now, propietario);
         }
     }
 }
