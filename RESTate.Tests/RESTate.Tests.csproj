@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Datos\" />
     <Folder Include="Api\" />
-    <Folder Include="Objetos\" />
     <Folder Include="Servicios\" />
   </ItemGroup>
 
