@@ -12,10 +12,10 @@ namespace RESTate.Objetos
         public int CantidadDeBaños { get; set; }
         public int MetrosCuadrados { get; set; }
         public int MetrosCuadradosCubiertos { get; set; }
-        public Contacto? Propietario { get; set; }
-        public Contacto? Inquilino { get; set; }
+        public Contacto? Propietario { get; private set; }
+        public Contacto? Inquilino { get; private set; }
         public Reserva? ReservaActiva { get => HistorialReservas.FirstOrDefault(reserva => reserva.Vigente); }
-        public List<Reserva> HistorialReservas { get; set; } = new List<Reserva>();
+        public List<Reserva> HistorialReservas { get; private set; } = new List<Reserva>();
 
         public Inmueble(string resumen, int cantidadDeAmbientes, int cantidadDeDormitorios, int cantidadDeBaños, int metrosCuadrados, int metrosCuadradosCubiertos, Contacto? propietario = null, Contacto? inquilino = null)
         {
