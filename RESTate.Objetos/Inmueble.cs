@@ -14,7 +14,12 @@ namespace RESTate.Objetos
         public int MetrosCuadradosCubiertos { get; set; }
         public Contacto? Propietario { get => HistorialPropietarios.LastOrDefault()?.Propietario; }
         public Contacto? Inquilino { get; private set; }
-        public Reserva? ReservaActiva { get => HistorialReservas.FirstOrDefault(reserva => reserva.Vigente); }
+
+        public Reserva? ReservaActivaALaFecha(DateTime fecha)
+        {
+            return HistorialReservas.FirstOrDefault(reserva => reserva.VigenteALaFecha(fecha));
+        }
+
         public List<Reserva> HistorialReservas { get; private set; } = new List<Reserva>();
         public List<PropietarioHistorico> HistorialPropietarios { get; set; } = new List<PropietarioHistorico>();
         public ContratoAlquiler? ContratoActivo { get => HistorialContratos.FirstOrDefault(contrato => contrato.Vigente); }
@@ -35,7 +40,7 @@ namespace RESTate.Objetos
 
         public void Reservar(Contacto contacto, DateTime fechaInicio, TimeSpan? duracion = null)
         {
-            if (!(ReservaActiva is null))
+            if (!(ReservaActivaALaFecha(fechaInicio) is null))
                 throw new DominioException("No se puede reservar el inmueble previamente reservado");
 
             HistorialReservas.Add(new Reserva(contacto, fechaInicio, duracion));
@@ -43,10 +48,11 @@ namespace RESTate.Objetos
 
         public void LiberarReserva(DateTime fechaLiberacion, string motivoLiberacion)
         {
-            if (ReservaActiva is null)
+            var reserva = ReservaActivaALaFecha(fechaLiberacion);
+            if (reserva is null)
                 throw new DominioException("No se puede liberar el inmueble no reservado");
 
-            ReservaActiva.Liberar(fechaLiberacion, motivoLiberacion);
+            reserva.Liberar(fechaLiberacion, motivoLiberacion);
         }
 
         public void CambiarPropietario(Contacto nuevoPropietario, string motivoCambio)

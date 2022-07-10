@@ -43,7 +43,7 @@ namespace RESTate.Tests.Objetos
 
             inmueble.Reservar(contacto, DateTime.Now);
 
-            Assert.NotNull(inmueble.ReservaActiva);
+            Assert.NotNull(inmueble.ReservaActivaALaFecha(DateTime.Now.AddDays(1)));
         }
 
         [Fact]
@@ -53,9 +53,11 @@ namespace RESTate.Tests.Objetos
             var propietario = new Contacto("Matias", "456");
             var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
 
-            inmueble.Reservar(contacto, DateTime.Now);
+            DateTime fecha = DateTime.Now;
 
-            Assert.Equal(contacto, inmueble.ReservaActiva.Interesado);
+            inmueble.Reservar(contacto, fecha);
+
+            Assert.Equal(contacto, inmueble.ReservaActivaALaFecha(fecha).Interesado);
         }
 
         [Fact]
@@ -69,7 +71,7 @@ namespace RESTate.Tests.Objetos
 
             inmueble.Reservar(contacto, fechaInicio);
 
-            Assert.Equal(fechaInicio, inmueble.ReservaActiva.FechaInicio);
+            Assert.Equal(fechaInicio, inmueble.ReservaActivaALaFecha(fechaInicio).FechaInicio);
         }
 
         [Fact]
@@ -95,11 +97,11 @@ namespace RESTate.Tests.Objetos
             DateTime fechaLiberacion = DateTime.Now;
 
             inmueble.Reservar(contacto, DateTime.Now);
-            Reserva copiaReserva = inmueble.ReservaActiva;
+            Reserva copiaReserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
 
             inmueble.LiberarReserva(fechaLiberacion, motivoLiberacion);
 
-            Assert.Null(inmueble.ReservaActiva);
+            Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
             Assert.Equal(motivoLiberacion, copiaReserva.MotivoLiberacion);
             Assert.Equal(fechaLiberacion, copiaReserva.FechaLiberacion);
         }
@@ -113,7 +115,7 @@ namespace RESTate.Tests.Objetos
 
             inmueble.Reservar(contacto, DateTime.Now);
 
-            Assert.Equal(TimeSpan.FromDays(7), inmueble.ReservaActiva.Duracion);
+            Assert.Equal(TimeSpan.FromDays(7), inmueble.ReservaActivaALaFecha(DateTime.Now).Duracion);
         }
 
         [Fact]
@@ -125,7 +127,7 @@ namespace RESTate.Tests.Objetos
 
             inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
 
-            Assert.Equal(TimeSpan.FromDays(5), inmueble.ReservaActiva.Duracion);
+            Assert.Equal(TimeSpan.FromDays(5), inmueble.ReservaActivaALaFecha(DateTime.Now).Duracion);
         }
 
         [Fact]
@@ -140,7 +142,7 @@ namespace RESTate.Tests.Objetos
 
             inmueble.Reservar(contacto, fechaInicio, duracion);
 
-            Assert.Equal(fechaInicio+duracion, inmueble.ReservaActiva.FechaVencimiento);
+            Assert.Equal(fechaInicio+duracion, inmueble.ReservaActivaALaFecha(DateTime.Now).FechaVencimiento);
         }
 
         [Fact]
@@ -151,11 +153,11 @@ namespace RESTate.Tests.Objetos
             var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
 
             inmueble.Reservar(contacto, DateTime.Now, TimeSpan.FromDays(5));
-            var copiaReserva = inmueble.ReservaActiva;
+            var copiaReserva = inmueble.ReservaActivaALaFecha(DateTime.Now);
 
             inmueble.LiberarReserva(DateTime.Now, "porque sí");
 
-            Assert.Null(inmueble.ReservaActiva);
+            Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
             Assert.Equal(copiaReserva, inmueble.HistorialReservas.First());
         }
 
@@ -167,9 +169,8 @@ namespace RESTate.Tests.Objetos
             var inmueble = new Inmueble("Depto", 3, 1, 2, 60, 60, propietario);
 
             inmueble.Reservar(contacto, DateTime.Now.AddDays(-6), TimeSpan.FromDays(5));
-            var copiaReserva = inmueble.ReservaActiva;
 
-            Assert.Null(inmueble.ReservaActiva);
+            Assert.Null(inmueble.ReservaActivaALaFecha(DateTime.Now));
         }
 
         [Fact]

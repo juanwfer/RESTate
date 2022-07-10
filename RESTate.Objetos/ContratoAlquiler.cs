@@ -19,7 +19,9 @@ namespace RESTate.Objetos
 
         public ContratoAlquiler(Inmueble inmueble, Contacto inquilino)
         {
-            if (!(inmueble.ReservaActiva is null) && inmueble.ReservaActiva.Interesado != inquilino)
+            DateTime fecha = DateTime.Now;
+            var reserva = inmueble.ReservaActivaALaFecha(fecha);
+            if (!(reserva is null) && reserva.Interesado != inquilino)
                 throw new DominioException("No se puede confeccionar un contrato para un inmueble reservado por otra persona");
 
             if (inmueble.Propietario is null)

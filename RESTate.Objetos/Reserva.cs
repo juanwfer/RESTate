@@ -12,7 +12,11 @@ namespace RESTate.Objetos
         public DateTime? FechaLiberacion { get; private set; }
         public TimeSpan Duracion { get; private set; }
         public DateTime FechaVencimiento { get => FechaInicio + Duracion; }
-        public bool Vigente { get => FechaLiberacion == null && DateTime.Now < FechaVencimiento; }
+
+        public bool VigenteALaFecha(DateTime fecha)
+        {
+            return FechaLiberacion == null && fecha < FechaVencimiento;
+        }
 
         public Reserva(Contacto interesado, DateTime fechaInicio, TimeSpan? duracion = null)
         {
