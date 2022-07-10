@@ -19,11 +19,6 @@ namespace RESTate.Objetos
 
         public ContratoAlquiler(Inmueble inmueble, Contacto inquilino)
         {
-            DateTime fecha = DateTime.Now;
-            var reserva = inmueble.ReservaActivaALaFecha(fecha);
-            if (!(reserva is null) && reserva.Interesado != inquilino)
-                throw new DominioException("No se puede confeccionar un contrato para un inmueble reservado por otra persona");
-
             if (inmueble.Propietario is null)
                 throw new DominioException("No se puede confeccionar un contrato para un inmueble sin propietario");
 
@@ -34,6 +29,11 @@ namespace RESTate.Objetos
 
         public void Firmar(DateTime fechaFirma)
         {
+            var reserva = Inmueble.ReservaActivaALaFecha(fechaFirma);
+
+            if (!(reserva is null) && reserva.Interesado != Inquilino)
+                throw new DominioException("No se puede confeccionar un contrato para un inmueble reservado por otra persona");
+
             if (MontoPactadoInicial <= 0)
                 throw new DominioException("No se puede firmar el contrato de locación sin establecer el monto pactado inicial");
 

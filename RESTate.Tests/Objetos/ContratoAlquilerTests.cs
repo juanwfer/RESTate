@@ -20,7 +20,7 @@ namespace RESTate.Tests.Objetos
         }
 
         [Fact]
-        public void ContratoAlquiler_NoDeberiaCrearse_ParaInmuebleReservado()
+        public void ContratoAlquiler_NoDeberiaFirmarse_ParaInmuebleReservado()
         {
             var interesado = new Contacto("Jorge", "123");
             var inquilino = new Contacto("Juan", "123");
@@ -28,12 +28,15 @@ namespace RESTate.Tests.Objetos
             var inmueble = new Inmueble("Departamento", 3, 1, 1, 60, 60, propietario);
 
             inmueble.Reservar(interesado, DateTime.Now.AddDays(-6));
+            var contrato = new ContratoAlquiler(inmueble, inquilino);
+            contrato.EstablecerPlazo(DateTime.Now, DateTime.Now.AddDays(500));
+            contrato.EstablecerMontoPactado(50000);
 
-            Assert.Throws<DominioException>(() => new ContratoAlquiler(inmueble, inquilino));
+            Assert.Throws<DominioException>(() => contrato.Firmar(DateTime.Now));
         }
 
         [Fact]
-        public void ContratoAlquiler_DeberiaPoderHacerse_SiInquilinoEsQuienReserva()
+        public void ContratoAlquiler_DeberiaPoderFirmarse_SiInquilinoEsQuienReserva()
         {
             var interesadoEInquilino = new Contacto("Jorge", "123");
             var propietario = new Contacto("Matias", "456");
@@ -42,6 +45,11 @@ namespace RESTate.Tests.Objetos
             inmueble.Reservar(interesadoEInquilino, DateTime.Now.AddDays(-6));
 
             var contrato = new ContratoAlquiler(inmueble, interesadoEInquilino);
+
+            contrato.EstablecerPlazo(DateTime.Now, DateTime.Now.AddDays(500));
+            contrato.EstablecerMontoPactado(50000);
+
+            contrato.Firmar(DateTime.Now);
         }
 
         [Fact]
