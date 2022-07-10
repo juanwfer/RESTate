@@ -275,6 +275,14 @@ namespace RESTate.Tests.Objetos
             inmueble.CambiarPropietario(propietario2, motivoCambio, DateTime.Now);
         }
 
+        [Fact]
+        public void Inmueble_DeberiaTener_MasCaracteristicas()
+        {
+            var inmueble = _InmueblePorDefecto();
+
+            inmueble.Descripcion = "Este inmueble cuenta con dos baños";
+        }
+
         private Inmueble _InmueblePorDefecto()
         {
             var propietario = new Contacto("Matias", "456");

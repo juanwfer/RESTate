@@ -1,4 +1,5 @@
 ﻿using RESTate.Objetos;
+using RESTate.Objetos.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +78,37 @@ namespace RESTate.Tests.Objetos
         public void Contacto_DeberiaTenerAlMenosUnTelefono()
         {
             Assert.Throws<ArgumentException>(() => new Contacto("Juan"));
+        }
+
+        [Fact]
+        public void Contacto_DeberiaTener_TipoYNumeroDeDni()
+        {
+            var contacto = new Contacto("Juan", "123");
+
+            contacto.TipoDocumento = TipoDocumento.Dni;
+            contacto.NumeroDocumento = 123456789;
+        }
+
+        [Fact]
+        public void Contacto_DeberiaTener_Observaciones_YOtrosDatos()
+        {
+            var contacto = new Contacto("Juan", "123")
+            {
+                Observaciones = "Creado el 10/7"
+            };
+        }
+
+
+
+        [Fact]
+        public void Contacto_DeberiaTener_Email()
+        {
+            var contacto = new Contacto("Juan", "123")
+            {
+                Observaciones = "Creado el 10/7"
+            };
+
+            contacto.Email = "juanwfer@gmail.com";
         }
     }
 }

@@ -24,6 +24,8 @@ namespace RESTate.Api
 
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
             builder.Logging.AddSerilog(logger);
 
             var app = builder.Build();
