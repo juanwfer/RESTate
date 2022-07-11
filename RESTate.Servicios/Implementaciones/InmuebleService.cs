@@ -38,12 +38,12 @@ namespace RESTate.Servicios.Implementaciones
         private Expression<Func<Inmueble, bool>> ObtenerPredicado(InmuebleFindDtoRequest request)
         {
             return inmueble => 
-                   (request.CantidadDeAmbientesMinimo == null || request.CantidadDeAmbientesMinimo <= inmueble.CantidadAmbientes)
-                && (request.CantidadDeAmbientesMaximo == null || request.CantidadDeAmbientesMaximo >= inmueble.CantidadAmbientes)
-                && (request.CantidadDeBañosMinimo == null || request.CantidadDeBañosMinimo <= inmueble.CantidadBaños)
-                && (request.CantidadDeBañosMaximo == null || request.CantidadDeBañosMaximo >= inmueble.CantidadBaños)
-                && (request.CantidadDeDormitoriosMinimo == null || request.CantidadDeDormitoriosMinimo <= inmueble.CantidadDormitorios)
-                && (request.CantidadDeDormitoriosMaximo == null || request.CantidadDeDormitoriosMaximo >= inmueble.CantidadDormitorios)
+                   (request.CantidadDeAmbientesMinimo == null || request.CantidadDeAmbientesMinimo <= inmueble.CantidadDeAmbientes)
+                && (request.CantidadDeAmbientesMaximo == null || request.CantidadDeAmbientesMaximo >= inmueble.CantidadDeAmbientes)
+                && (request.CantidadDeBañosMinimo == null || request.CantidadDeBañosMinimo <= inmueble.CantidadDeBaños)
+                && (request.CantidadDeBañosMaximo == null || request.CantidadDeBañosMaximo >= inmueble.CantidadDeBaños)
+                && (request.CantidadDeDormitoriosMinimo == null || request.CantidadDeDormitoriosMinimo <= inmueble.CantidadDeDormitorios)
+                && (request.CantidadDeDormitoriosMaximo == null || request.CantidadDeDormitoriosMaximo >= inmueble.CantidadDeDormitorios)
                 && (request.MetrosCuadradosMinimo == null || request.MetrosCuadradosMinimo <= inmueble.MetrosCuadrados)
                 && (request.MetrosCuadradosMaximo == null || request.MetrosCuadradosMaximo >= inmueble.MetrosCuadrados)
                 && (request.MetrosCuadradosCubiertosMinimo == null || request.MetrosCuadradosCubiertosMinimo <= inmueble.MetrosCuadradosCubiertos)
