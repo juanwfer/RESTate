@@ -18,6 +18,7 @@ namespace RESTate.Datos
             servicios.AddDbContext<RESTateContext>(options => options.UseSqlServer("name=ConnectionStrings:RESTateDb"));
 
             servicios.AddTransient<IInmuebleRepository, InmuebleRepository>();
+            servicios.AddTransient<IContactoRepository, ContactoRepository>();
 
             return servicios;
         }

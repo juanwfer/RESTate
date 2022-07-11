@@ -10,6 +10,9 @@ namespace RESTate.Api.MappingProfiles
         {
             CreateMap<InmuebleFindDtoResponse, InmueblesGetAllResponse>()
                 .ForMember(d => d.Link, opt => opt.MapFrom(s => $"inmuebles/{s.IdInmueble}"));
+
+            CreateMap<ContactoFindDtoResponse, ContactosGetAllResponse>()
+                .ForMember(d => d.Link, opt => opt.MapFrom(s => $"contactos/{s.IdContacto}"));
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RESTate.Datos;
 
@@ -11,9 +12,10 @@ using RESTate.Datos;
 namespace RESTate.Datos.Migrations
 {
     [DbContext(typeof(RESTateContext))]
-    partial class RESTateContextModelSnapshot : ModelSnapshot
+    [Migration("20220711041300_MigracionInicial")]
+    partial class MigracionInicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

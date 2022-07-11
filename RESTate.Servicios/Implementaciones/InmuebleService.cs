@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RESTate.Servicios.Implementaciones
@@ -30,9 +29,26 @@ namespace RESTate.Servicios.Implementaciones
 
         public async Task<IEnumerable<InmuebleFindDtoResponse>> FindAsync(InmuebleFindDtoRequest request)
         {
-            var repoResponse = await _inmuebleRepository.FindAsync(i => true);
+            var predicado = ObtenerPredicado(request);
+            var repoResponse = await _inmuebleRepository.FindAsync(predicado);
 
             return _mapper.Map<IEnumerable<InmuebleFindDtoResponse>>(repoResponse);
+        }
+
+        private Expression<Func<Inmueble, bool>> ObtenerPredicado(InmuebleFindDtoRequest request)
+        {
+            return inmueble => 
+                   (request.CantidadDeAmbientesMinimo == null || request.CantidadDeAmbientesMinimo <= inmueble.CantidadDeAmbientes)
+                && (request.CantidadDeAmbientesMaximo == null || request.CantidadDeAmbientesMaximo >= inmueble.CantidadDeAmbientes)
+                && (request.CantidadDeBañosMinimo == null || request.CantidadDeBañosMinimo <= inmueble.CantidadDeBaños)
+                && (request.CantidadDeBañosMaximo == null || request.CantidadDeBañosMaximo >= inmueble.CantidadDeBaños)
+                && (request.CantidadDeDormitoriosMinimo == null || request.CantidadDeDormitoriosMinimo <= inmueble.CantidadDeDormitorios)
+                && (request.CantidadDeDormitoriosMaximo == null || request.CantidadDeDormitoriosMaximo >= inmueble.CantidadDeDormitorios)
+                && (request.MetrosCuadradosMinimo == null || request.MetrosCuadradosMinimo <= inmueble.MetrosCuadrados)
+                && (request.MetrosCuadradosMaximo == null || request.MetrosCuadradosMaximo >= inmueble.MetrosCuadrados)
+                && (request.MetrosCuadradosCubiertosMinimo == null || request.MetrosCuadradosCubiertosMinimo <= inmueble.MetrosCuadradosCubiertos)
+                && (request.MetrosCuadradosCubiertosMaximo == null || request.MetrosCuadradosCubiertosMaximo >= inmueble.MetrosCuadradosCubiertos)
+                && (string.IsNullOrEmpty(request.PalabrasClave) || (inmueble.Resumen??"").Contains(request.PalabrasClave) || (inmueble.Descripcion ?? "").Contains(request.PalabrasClave));
         }
     }
 }
