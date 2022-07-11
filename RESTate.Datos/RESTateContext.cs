@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RESTate.Datos.Entities;
+using System.Collections.Generic;
 using System.IO;
 
 namespace RESTate.Datos
@@ -23,5 +24,8 @@ namespace RESTate.Datos
             }
         }
         public DbSet<Inmueble> Inmuebles => Set<Inmueble>();
+        public DbSet<Contacto> Contactos => Set<Contacto>();
+        public DbSet<Reserva> Reservas => Set<Reserva>();
+        public DbSet<ContratoAlquiler> ContratosAlquiler => Set<ContratoAlquiler>();
     }
 }
