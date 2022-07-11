@@ -19,6 +19,8 @@ namespace RESTate.Datos.Entities
         public string? Observaciones { get; set; }
         public string? Email { get; set; }
 
+        public virtual IEnumerable<ContratoAlquiler> ContratosComoInquilino { get; set; } = new List<ContratoAlquiler>();
+        public virtual IEnumerable<ContratoAlquiler> ContratosComoPropietario { get; set; } = new List<ContratoAlquiler>();
         public virtual IEnumerable<Telefono> Telefonos { get; set; } = new List<Telefono>();
     }
 

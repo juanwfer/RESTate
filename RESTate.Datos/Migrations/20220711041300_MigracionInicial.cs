@@ -78,7 +78,7 @@ namespace RESTate.Datos.Migrations
                     UbicacionDocumento = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaRescision = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdInmueble = table.Column<int>(type: "int", nullable: false),
-                    IdContactoInquilino = table.Column<int>(type: "int", nullable: true),
+                    IdContactoInquilino = table.Column<int>(type: "int", nullable: false),
                     IdContactoPropietario = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -93,8 +93,7 @@ namespace RESTate.Datos.Migrations
                         name: "FK_ContratosAlquiler_Contactos_IdContactoPropietario",
                         column: x => x.IdContactoPropietario,
                         principalTable: "Contactos",
-                        principalColumn: "IdContacto",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdContacto");
                     table.ForeignKey(
                         name: "FK_ContratosAlquiler_Inmuebles_IdInmueble",
                         column: x => x.IdInmueble,

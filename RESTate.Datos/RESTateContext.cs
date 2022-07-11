@@ -27,5 +27,18 @@ namespace RESTate.Datos
         public DbSet<Contacto> Contactos => Set<Contacto>();
         public DbSet<Reserva> Reservas => Set<Reserva>();
         public DbSet<ContratoAlquiler> ContratosAlquiler => Set<ContratoAlquiler>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ContratoAlquiler>()
+                .HasOne(c => c.ContactoInquilino)
+                .WithMany(c => c.ContratosComoInquilino)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ContratoAlquiler>()
+                .HasOne(c => c.ContactoPropietario)
+                .WithMany(c => c.ContratosComoPropietario)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }

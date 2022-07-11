@@ -72,6 +72,7 @@ namespace RESTate.Datos.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("IdContactoInquilino")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("IdContactoPropietario")
@@ -222,13 +223,15 @@ namespace RESTate.Datos.Migrations
             modelBuilder.Entity("RESTate.Datos.Entities.ContratoAlquiler", b =>
                 {
                     b.HasOne("RESTate.Datos.Entities.Contacto", "ContactoInquilino")
-                        .WithMany()
-                        .HasForeignKey("IdContactoInquilino");
+                        .WithMany("ContratosComoInquilino")
+                        .HasForeignKey("IdContactoInquilino")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("RESTate.Datos.Entities.Contacto", "ContactoPropietario")
-                        .WithMany()
+                        .WithMany("ContratosComoPropietario")
                         .HasForeignKey("IdContactoPropietario")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("RESTate.Datos.Entities.Inmueble", "Inmueble")
@@ -291,6 +294,10 @@ namespace RESTate.Datos.Migrations
 
             modelBuilder.Entity("RESTate.Datos.Entities.Contacto", b =>
                 {
+                    b.Navigation("ContratosComoInquilino");
+
+                    b.Navigation("ContratosComoPropietario");
+
                     b.Navigation("Telefonos");
                 });
 
