@@ -24,13 +24,13 @@ namespace RESTate.Datos.Entities
         public int IdInmueble { get; set; }
 
         [ForeignKey(nameof(ContactoInquilino))]
-        public int IdContactoInquilino { get; set; }
+        public int? IdContactoInquilino { get; set; }
 
         [ForeignKey(nameof(ContactoPropietario))]
         public int IdContactoPropietario { get; set; }
 
         public virtual Inmueble Inmueble { get; set; } = null!;
-        public virtual Contacto ContactoPropietario { get; set; } = null!;
         public virtual Contacto ContactoInquilino { get; set; } = null!;
+        public virtual Contacto ContactoPropietario { get; set; } = null!;
     }
 }

@@ -9,6 +9,7 @@ namespace RESTate.Api.MappingProfiles
         public RequestToDto()
         {
             CreateMap<InmueblesGetAllRequest, InmuebleFindDtoRequest>();
+            CreateMap<ContactosGetAllRequest, ContactoFindDtoRequest>();
         }
     }
 }

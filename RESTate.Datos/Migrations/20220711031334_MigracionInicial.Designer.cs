@@ -12,7 +12,7 @@ using RESTate.Datos;
 namespace RESTate.Datos.Migrations
 {
     [DbContext(typeof(RESTateContext))]
-    [Migration("20220711014121_MigracionInicial")]
+    [Migration("20220711031334_MigracionInicial")]
     partial class MigracionInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace RESTate.Datos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("NumeroDocumento")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
@@ -48,6 +51,52 @@ namespace RESTate.Datos.Migrations
                     b.HasKey("IdContacto");
 
                     b.ToTable("Contactos");
+                });
+
+            modelBuilder.Entity("RESTate.Datos.Entities.ContratoAlquiler", b =>
+                {
+                    b.Property<int>("IdContratoAlquiler")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdContratoAlquiler"), 1L, 1);
+
+                    b.Property<DateTime?>("FechaFinalizacionPlazo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaFirma")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaInicioPlazo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaRescision")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("IdContactoInquilino")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdContactoPropietario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdInmueble")
+                        .HasColumnType("int");
+
+                    b.Property<double>("MontoPactadoInicial")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UbicacionDocumento")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdContratoAlquiler");
+
+                    b.HasIndex("IdContactoInquilino");
+
+                    b.HasIndex("IdContactoPropietario");
+
+                    b.HasIndex("IdInmueble");
+
+                    b.ToTable("ContratosAlquiler");
                 });
 
             modelBuilder.Entity("RESTate.Datos.Entities.Inmueble", b =>
@@ -161,11 +210,40 @@ namespace RESTate.Datos.Migrations
                     b.Property<int>("IdContacto")
                         .HasColumnType("int");
 
+                    b.Property<string>("NumeroTelefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IdTelefono");
 
                     b.HasIndex("IdContacto");
 
                     b.ToTable("Telefonos");
+                });
+
+            modelBuilder.Entity("RESTate.Datos.Entities.ContratoAlquiler", b =>
+                {
+                    b.HasOne("RESTate.Datos.Entities.Contacto", "ContactoInquilino")
+                        .WithMany()
+                        .HasForeignKey("IdContactoInquilino");
+
+                    b.HasOne("RESTate.Datos.Entities.Contacto", "ContactoPropietario")
+                        .WithMany()
+                        .HasForeignKey("IdContactoPropietario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RESTate.Datos.Entities.Inmueble", "Inmueble")
+                        .WithMany()
+                        .HasForeignKey("IdInmueble")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactoInquilino");
+
+                    b.Navigation("ContactoPropietario");
+
+                    b.Navigation("Inmueble");
                 });
 
             modelBuilder.Entity("RESTate.Datos.Entities.PropietarioHistorico", b =>

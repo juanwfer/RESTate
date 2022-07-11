@@ -17,6 +17,7 @@ namespace RESTate.Datos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoDocumento = table.Column<int>(type: "int", nullable: true),
+                    NumeroDocumento = table.Column<long>(type: "bigint", nullable: true),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -50,6 +51,7 @@ namespace RESTate.Datos.Migrations
                 {
                     IdTelefono = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdContacto = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -60,6 +62,44 @@ namespace RESTate.Datos.Migrations
                         column: x => x.IdContacto,
                         principalTable: "Contactos",
                         principalColumn: "IdContacto",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContratosAlquiler",
+                columns: table => new
+                {
+                    IdContratoAlquiler = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaFirma = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FechaInicioPlazo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FechaFinalizacionPlazo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MontoPactadoInicial = table.Column<double>(type: "float", nullable: false),
+                    UbicacionDocumento = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaRescision = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IdInmueble = table.Column<int>(type: "int", nullable: false),
+                    IdContactoInquilino = table.Column<int>(type: "int", nullable: true),
+                    IdContactoPropietario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContratosAlquiler", x => x.IdContratoAlquiler);
+                    table.ForeignKey(
+                        name: "FK_ContratosAlquiler_Contactos_IdContactoInquilino",
+                        column: x => x.IdContactoInquilino,
+                        principalTable: "Contactos",
+                        principalColumn: "IdContacto");
+                    table.ForeignKey(
+                        name: "FK_ContratosAlquiler_Contactos_IdContactoPropietario",
+                        column: x => x.IdContactoPropietario,
+                        principalTable: "Contactos",
+                        principalColumn: "IdContacto",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContratosAlquiler_Inmuebles_IdInmueble",
+                        column: x => x.IdInmueble,
+                        principalTable: "Inmuebles",
+                        principalColumn: "IdInmueble",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -121,6 +161,21 @@ namespace RESTate.Datos.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContratosAlquiler_IdContactoInquilino",
+                table: "ContratosAlquiler",
+                column: "IdContactoInquilino");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContratosAlquiler_IdContactoPropietario",
+                table: "ContratosAlquiler",
+                column: "IdContactoPropietario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContratosAlquiler_IdInmueble",
+                table: "ContratosAlquiler",
+                column: "IdInmueble");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropietariosHistoricos_IdContactoPropietario",
                 table: "PropietariosHistoricos",
                 column: "IdContactoPropietario");
@@ -148,6 +203,9 @@ namespace RESTate.Datos.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ContratosAlquiler");
+
             migrationBuilder.DropTable(
                 name: "PropietariosHistoricos");
 

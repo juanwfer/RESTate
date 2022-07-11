@@ -15,6 +15,7 @@ namespace RESTate.Datos.Entities
         public int IdContacto { get; set; }
         public string NombreCompleto { get; set; } = null!;
         public int? TipoDocumento { get; set; }
+        public long? NumeroDocumento { get; set; }
         public string? Observaciones { get; set; }
         public string? Email { get; set; }
 
@@ -26,6 +27,7 @@ namespace RESTate.Datos.Entities
     {
         [Key]
         public int IdTelefono { get; set; }
+        public string NumeroTelefono { get; set; } = null!;
 
         [ForeignKey(nameof(Contacto))]
         public int IdContacto { get; set; }

@@ -15,6 +15,7 @@ namespace RESTate.Servicios
             servicios.AddCapaDatos(configuration);
 
             servicios.AddTransient<IInmuebleService, InmuebleService>();
+            servicios.AddTransient<IContactoService, ContactoService>();
 
             return servicios;
         }
